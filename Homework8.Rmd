@@ -1,13 +1,14 @@
 ---
 title: 'STA 5207: Homework 8'
-date: "Due: Friday, March 22 by 11:59 PM"
-output: pdf_document
+date: 'Due: Friday, March 22 by 11:59 PM'
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 
 Include your R code in an R chunks as part of your answer. In addition, your written answer to each exercise should be self-contained so that the grader can determine your solution without reading your code or deciphering its output.
 
@@ -15,87 +16,95 @@ Include your R code in an R chunks as part of your answer. In addition, your wri
 
 For this exercise, we will use the `divusa` data set from the `faraway` package. You can also find the data in `divusa.csv` on Canvas. The data set contains information on divorce rates in the USA from 1920 to 1996. The variables in the data set are
 
-* `year`: the year from 1920-1996.
+-   `year`: the year from 1920-1996.
 
-* `divorce`: divorce per 1000 women aged 15 or more.
+-   `divorce`: divorce per 1000 women aged 15 or more.
 
-* `unemployed`: unemployment rate.
+-   `unemployed`: unemployment rate.
 
-* `femlab`: female participation in labor force aged 16+.
+-   `femlab`: female participation in labor force aged 16+.
 
-* `marriage`: marriages per 1000 unmarried women aged 16+.
+-   `marriage`: marriages per 1000 unmarried women aged 16+.
 
-* `birth`: births per 1000 women aged 15-44.
+-   `birth`: births per 1000 women aged 15-44.
 
-* `military`: military personnel per 1000 population.
+-   `military`: military personnel per 1000 population.
 
 In the following exercise, we will model the `divorce` variable in terms of `unemployed`, `femlab`, `marriage`, `birth`, and `military`.
 
-1. (2 points) The variable `year` is not being used in the model, but it shows that the measurements were taken across time. What does this make you suspect about the error term? No output need.
+1.  (2 points) The variable `year` is not being used in the model, but it shows that the measurements were taken across time. What does this make you suspect about the error term? No output need.
 
-2. (6 points) Fit an OLS regression model with `divorce` as the response and all other variables except `year` as predictors. Check for serial correlation in the errors using a graphical method. Do you feel like the errors are serially correlated? Justify your answer. Include any plots in your response.
+    **Answer:** This makes me suspect that the errors do not have equal variance. Since we are not using year as a predictor, the variances in error for each year may differ.
 
-3. (6 points) Check for the presence of serial correlation in the errors using the Durbin-Watson test. Report the following:
+2.  (6 points) Fit an OLS regression model with `divorce` as the response and all other variables except `year` as predictors. Check for serial correlation in the errors using a graphical method. Do you feel like the errors are serially correlated? Justify your answer. Include any plots in your response.
 
-   * The null and alternative hypotheses.
-   * The value of the test statistic.
-   * The $p$-value of the test.
-   * A statistical decision at the $\alpha = 0.05$ significance level.
+    ```{r}
+    library(faraway)
 
-4. (10 points) Model the serial correlation with an AR(1) process, meaning that $\Sigma_{ij} = \phi^{|i-j|}$. Use the ML method to estimate the parameters in the GLS fit. Create and report a table with the OLS estimates (model in part 2) and GLS estimates for the slope parameters.
+    data(divusa, package='faraway')
+    ```
 
-5. (10 points) Perform a $t$-test at the 5% significance level for each slope parameter for the OLS model in part 2 and the GLS model in part 4. Are there differences between which predictors are significant in the OLS model and which are significant in the GLS model? If so, state the changes. 
+    **Answer:**
 
-6. (5 points) For the GLS model in part 4, calculate and report the variance inflation factor (VIF) for each of the predictors using the `vif` function from the `car` package. Do any of these VIFs suggest we should be cautious about concluding a variable is “not significant” given the other predictors?
+3.  (6 points) Check for the presence of serial correlation in the errors using the Durbin-Watson test. Report the following:
 
-7. (5 points) Report the estimated value of the autocorrelation parameter $\phi$ and its associated 95% confidence interval. Does the interval indicate that $\phi$ is significantly different from zero at the 5% significance level?
+    -   The null and alternative hypotheses.
+    -   The value of the test statistic.
+    -   The $p$-value of the test.
+    -   A statistical decision at the $\alpha = 0.05$ significance level.
 
-8. (6 points) Check for serial correlation in the normalized errors of the GLS model in part 4 using a graphical method. Do you feel like the normalized errors are serially correlated? Justify your answer. Include any plots in your response.
+4.  (10 points) Model the serial correlation with an AR(1) process, meaning that $\Sigma_{ij} = \phi^{|i-j|}$. Use the ML method to estimate the parameters in the GLS fit. Create and report a table with the OLS estimates (model in part 2) and GLS estimates for the slope parameters.
+
+5.  (10 points) Perform a $t$-test at the 5% significance level for each slope parameter for the OLS model in part 2 and the GLS model in part 4. Are there differences between which predictors are significant in the OLS model and which are significant in the GLS model? If so, state the changes.
+
+6.  (5 points) For the GLS model in part 4, calculate and report the variance inflation factor (VIF) for each of the predictors using the `vif` function from the `car` package. Do any of these VIFs suggest we should be cautious about concluding a variable is “not significant” given the other predictors?
+
+7.  (5 points) Report the estimated value of the autocorrelation parameter $\phi$ and its associated 95% confidence interval. Does the interval indicate that $\phi$ is significantly different from zero at the 5% significance level?
+
+8.  (6 points) Check for serial correlation in the normalized errors of the GLS model in part 4 using a graphical method. Do you feel like the normalized errors are serially correlated? Justify your answer. Include any plots in your response.
 
 ## Exercise 2 (The `gala` Data Set) [40 points]
 
 For this exercise, we will use the `gala` data set from the `faraway` package. You can also find the data set in `gala.csv` on Canvas. The data set contains the following variables:
 
-* `Species`: The number of plant species found on the island.
+-   `Species`: The number of plant species found on the island.
 
-* `Area`: The area of the island ($\text{km}^2$).
+-   `Area`: The area of the island ($\text{km}^2$).
 
-* `Elevation`: The highest elevation of the island (m).
+-   `Elevation`: The highest elevation of the island (m).
 
-* `Nearest`: The distance from the nearest island (km).
+-   `Nearest`: The distance from the nearest island (km).
 
-* `Scruz`: The distance from Santa Cruz island (km).
+-   `Scruz`: The distance from Santa Cruz island (km).
 
-* `Adjacent`: The area of the adjacent island ($\text{km}^2$).
+-   `Adjacent`: The area of the adjacent island ($\text{km}^2$).
 
 In the following exercise, we will model `Species` in terms of `Area`, `Elevation`, and `Nearest`.
 
-1. (5 points) Perform OLS regression with `Species` as the response and `Area`, `Elevation`, and `Nearest` as the predictors. Check the constant variance assumption for this model using a graphical method and a hypothesis test at the $\alpha = 0.05$ significance level. Do you feel it has been violated? Justify your answer. Include any plots in your response.
+1.  (5 points) Perform OLS regression with `Species` as the response and `Area`, `Elevation`, and `Nearest` as the predictors. Check the constant variance assumption for this model using a graphical method and a hypothesis test at the $\alpha = 0.05$ significance level. Do you feel it has been violated? Justify your answer. Include any plots in your response.
 
-2. (8 points) Perform a regression of the absolute value of the residuals from the model in part 1 against the predictors `Area`, `Elevation`, and `Nearest` using OLS. Report the estimated regression equation using all 3 predictors.
+2.  (8 points) Perform a regression of the absolute value of the residuals from the model in part 1 against the predictors `Area`, `Elevation`, and `Nearest` using OLS. Report the estimated regression equation using all 3 predictors.
 
-3. (8 points) Perform WLS using the inverse of the squared fitted values from the model in part 2 as weights, i.e, $\texttt{weights} = 1/\text{(fitted values)}^2$. Create and report a table with the OLS estimates (model in part 1) and WLS estimates for the slope parameters.
+3.  (8 points) Perform WLS using the inverse of the squared fitted values from the model in part 2 as weights, i.e, $\texttt{weights} = 1/\text{(fitted values)}^2$. Create and report a table with the OLS estimates (model in part 1) and WLS estimates for the slope parameters.
 
-4. (8 points) Perform a $t$-test at the 5% significance level for each slope parameter for the OLS model in part 1 and the WLS model in part 3. Are there differences between which predictors are significant in the OLS model and which are significant in the WLS model? If so, state the changes. 
+4.  (8 points) Perform a $t$-test at the 5% significance level for each slope parameter for the OLS model in part 1 and the WLS model in part 3. Are there differences between which predictors are significant in the OLS model and which are significant in the WLS model? If so, state the changes.
 
-5. (5 points) For the WLS model in part 3, calculate and report the variance inflation factor (VIF) for each of the predictors using the `vif` function from the `car` package. Do any of these VIFs suggest we should be cautious about concluding a variable is “not significant” given the other predictors?
+5.  (5 points) For the WLS model in part 3, calculate and report the variance inflation factor (VIF) for each of the predictors using the `vif` function from the `car` package. Do any of these VIFs suggest we should be cautious about concluding a variable is “not significant” given the other predictors?
 
-6. (6 points) Check the constant variance assumption on the weighted residuals of the WLS model using a a graphical method and a hypothesis test at the $\alpha = 0.05$ significance level. Do you feel that it has been violated? Justify your answer. Include any plots in your response.
-
+6.  (6 points) Check the constant variance assumption on the weighted residuals of the WLS model using a a graphical method and a hypothesis test at the $\alpha = 0.05$ significance level. Do you feel that it has been violated? Justify your answer. Include any plots in your response.
 
 ## Exercise 3 (WLS for Survey Data) [10 points]
 
 For this exercise, we will use the the `chibus` data set, which can be found in `chibus.csv` on Canvas. Each observation in this data set represents a pair of zones in the city of Chicago. The variables in the data set are
 
-* `computed_time`: travel times, computed from bus timetables augmented by walk times from zone centers to bus-stops (assuming a
-walking speed of 3 mph) and expected waiting times for the bus (= half of the time between successive buses).
+-   `computed_time`: travel times, computed from bus timetables augmented by walk times from zone centers to bus-stops (assuming a walking speed of 3 mph) and expected waiting times for the bus (= half of the time between successive buses).
 
-* `perceived_time`: average travel times as reported to the U.S. Census Bureau by $n$ travelers.
+-   `perceived_time`: average travel times as reported to the U.S. Census Bureau by $n$ travelers.
 
-* `n`: number of travelers per observations for each case.
+-   `n`: number of travelers per observations for each case.
 
 In the following exercise, we will model `perceived_time` in terms of `computed_time`.
 
-1. (5 points) The variable `n` is not being used in the model, but it shows that the response is recorded as an average over different groups of size $n_i$. Based on this observation, what would make for a good choice of weights? No output is needed.
+1.  (5 points) The variable `n` is not being used in the model, but it shows that the response is recorded as an average over different groups of size $n_i$. Based on this observation, what would make for a good choice of weights? No output is needed.
 
-2. (5 points) Perform WLS with `perceived_time` as the response and `computed_time` as the predictor using the weights you chose in part 1. Report the estimated regression equation for this model.
+2.  (5 points) Perform WLS with `perceived_time` as the response and `computed_time` as the predictor using the weights you chose in part 1. Report the estimated regression equation for this model.
